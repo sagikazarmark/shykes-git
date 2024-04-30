@@ -46,7 +46,7 @@ func (g *Git) Load(
 // Initialize a git repository
 func (g *Git) Init() *Repo {
 	return &Repo{
-		State: container().
+		State: g.container().
 			WithDirectory(gitStatePath, dag.Directory()).
 			WithExec([]string{
 				"git", "--git-dir=" + gitStatePath,
@@ -59,7 +59,7 @@ func (g *Git) Init() *Repo {
 
 // Clone a remote git repository
 func (g *Git) Clone(ctx context.Context, url string) *Repo {
-	clone := container().
+	clone := g.container().
 		WithWorkdir("/tmp").
 		WithExec([]string{"git", "clone", url, "src"}).
 		Directory("src")
@@ -68,7 +68,7 @@ func (g *Git) Clone(ctx context.Context, url string) *Repo {
 		With(clone.Directory(".git"), clone.WithoutDirectory(".git"))
 }
 
-func container() *Container {
+func (g *Git) container() *Container {
 	return dag.
 		Wolfi().
 		Container(WolfiContainerOpts{
