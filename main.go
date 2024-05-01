@@ -57,6 +57,7 @@ func (g *Git) Load(
 	return &Repo{
 		State:    state,
 		Worktree: worktree,
+		Git:      g,
 	}, nil
 }
 
